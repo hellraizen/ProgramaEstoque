@@ -2,12 +2,16 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import Fachada.Fachada;
+import Produto.Produto;
 
 /**
  * Servlet implementation class ConecEstoque
@@ -40,6 +44,14 @@ public class ConecEstoque extends HttpServlet {
 		int quantidade= Integer.parseInt(request.getParameter("quantidade"));
 		System.out.println(nome);
 		System.out.println(quantidade);
+		Produto produto = new Produto(nome,quantidade);
+		try {
+			Fachada.getInstance().cadastrarProduto(produto);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		PrintWriter out = response.getWriter();
 		
 		out.print("<html><head><title>Resposta</title></head><body>");

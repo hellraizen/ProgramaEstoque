@@ -22,13 +22,14 @@ public class RepositorioProduto {
 	public void cadastrar(Produto produto) throws SQLException {
 		
 		// Criando a String SQL
-		String sql = "insert into clientetest (nome, cpf, dataNascimento, sexo, email, telefone) values (?,?,?,?,?,?)";
+		String sql = "insert into produto (nome,quantidade) values (?,?)";
 
 		// Criar o PreparedStatement, objeto para executar a query
 		PreparedStatement preStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
 		// Atualizando o primeiro parametro
 		preStatement.setString(1, produto.getNome());
+		preStatement.setInt(2, produto.getQuantidade());
 	
 		
 
@@ -50,7 +51,7 @@ public class RepositorioProduto {
 	public void atualizar(Produto produto) throws SQLException {
 
 		// Criando a String SQL
-		String sql = "update clientetest set nome= ?, cpf =?,datanascimento=?,sexo=?, email=?, telefone=? where cpf = ?";
+		String sql = "update produto set nome= ?, quantidade=? where id = ?";
 		// Criar o PreparedStatement, objeto para executar a query
 		PreparedStatement preStatement;
 
@@ -67,15 +68,15 @@ public class RepositorioProduto {
 	}
 
 	
-	public void remover(String cpf) throws SQLException {
+	public void remover(int id) throws SQLException {
 
 		// Criando a String SQL
-		String sql = "delete from clientetest where CPF = ?";
+		String sql = "delete from Produto where id = ?";
 
 		// Criar o PreparedStatement, objeto para executar a query
 		PreparedStatement preStatement = conn.prepareStatement(sql);
 
-		preStatement.setString(1, cpf);
+		preStatement.setInt(1, id);
 
 		// Executando o select
 		preStatement.executeUpdate();
@@ -86,13 +87,13 @@ public class RepositorioProduto {
 	}
 
 	
-	public Produto procurar(String cpf) throws SQLException {
+	public Produto procurar(String nome1) throws SQLException {
 
-		String sql = "select * from clientetest where cpf= ?";
+		String sql = "select * from produto where nome= ?";
 
 		PreparedStatement preStatement = conn.prepareStatement(sql);
 
-		preStatement.setString(1, cpf);
+		preStatement.setString(1, nome1);
 		ResultSet resultSet = preStatement.executeQuery();
 		while (resultSet.next()) {
 		int codigo = resultSet.getInt(1);
@@ -100,7 +101,7 @@ public class RepositorioProduto {
 		int quantidade = Integer.parseInt(resultSet.getString(3));
 		
 		
-		Produto produto = new Produto(nome, quantidade);
+		Produto produto = new Produto(nome, quantidade,codigo);
 		return produto;
 		
 		}
@@ -110,23 +111,23 @@ public class RepositorioProduto {
 	}
 
 	
-	public boolean existe(String cpf) throws SQLException {
+	public boolean existe(int id) throws SQLException {
 		
-		String sql = "select * from clientetest where cpf= ?";
+		String sql = "select * from produto where id= ?";
 
 		PreparedStatement preStatement = conn.prepareStatement(sql);
 
-		preStatement.setString(1, cpf);
+		preStatement.setInt(1, id);
 		ResultSet resultSet = preStatement.executeQuery();
 		return true;
 	}
 
 	public ArrayList<Produto> listar() throws SQLException {
 
-		ArrayList<Produto> arrayListCliente = new ArrayList<Produto>();
+		ArrayList<Produto> arrayListProduto = new ArrayList<Produto>();
 
 		// Criando a String SQL
-		String sql = "select * from clientetest";
+		String sql = "select * from produto";
 
 		// Criar o PreparedStatement, objeto para executar a query
 		PreparedStatement preStatement = conn.prepareStatement(sql);
@@ -140,11 +141,11 @@ public class RepositorioProduto {
 			String nome = resultSet.getString(2);
 			int quantidade = Integer.parseInt(resultSet.getString(3));
 			
-			Produto produto = new Produto(nome, quantidade);
-			arrayListCliente.add(produto);
+			Produto produto = new Produto(nome, quantidade,codigo);
+			arrayListProduto.add(produto);
 		}
 
-		return arrayListCliente;
+		return arrayListProduto;
 	}
 
 }

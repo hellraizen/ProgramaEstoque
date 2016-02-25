@@ -7,14 +7,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-<nav id="menu">
 <h1>Lista</h1>
-<ul>
+<nav id="menu">
+	<ul>
 		<li><a href="Index.jsp">Home</a></li>
-
-		
 	</ul>
 </nav>
-
+<form method="post"  action="ListarEstoque">
+	<input type="submit" value="listar" >
+</form>
 </body>
 </html>
